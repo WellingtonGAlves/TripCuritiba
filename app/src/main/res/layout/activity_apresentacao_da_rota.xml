@@ -4,6 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.wellclbo.tripcuritiba.LogadoActivity">
-    <include layout="@layout/content_list_rota" />
+    tools:context="com.example.wellclbo.tripcuritiba.ApresentacaoDaRota">
+    <include layout="@layout/content_list_ponto" />
 </LinearLayout>

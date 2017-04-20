@@ -1,5 +1,6 @@
 package com.example.wellclbo.tripcuritiba;
 
+import android.net.Uri;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -12,8 +13,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.sql.Date;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -93,5 +96,66 @@ public class Util {
             return null;
         }
     }
+    public static Pessoa JsonParaObjetoPessoa(String json) throws JSONException {
+        Pessoa pessoa = new Pessoa();
+        JSONObject jsonObjPessoa = new JSONObject(json);
+        pessoa.setAceito(jsonObjPessoa.getBoolean("Aceito"));
+        String dateStr = jsonObjPessoa.getString("DataCadastro").toString();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        Date dataCadastro = new Date();
+        try{
+            dataCadastro = sdf.parse(dateStr);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        pessoa.setDataCadastro(dataCadastro);
+        pessoa.setEmail(jsonObjPessoa.getString("Email"));
+        pessoa.setId(jsonObjPessoa.getInt("Id"));
+        pessoa.setNome(jsonObjPessoa.getString("Nome"));
+        //pegar rotas
+        List<Rota> lRotas = new ArrayList<Rota>();
+        Rota rota ;
+
+        JSONArray jArrRota = jsonObjPessoa.getJSONArray("Rotas");
+        for(int i = 0; i <jArrRota.length (); i ++) {
+            rota = new Rota();
+            JSONObject objRotas = jArrRota.getJSONObject (i);
+            rota.setNome(objRotas.getString("Nome"));
+            rota.setId(objRotas.getInt("Id"));
+
+            String dateStrRota = objRotas.getString("Data").toString();
+            SimpleDateFormat sdfRota = new SimpleDateFormat("dd-MM-yyyy");
+            Date dataRota = new Date();
+            try{
+                dataRota = sdfRota.parse(dateStrRota);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            rota.setData(dataRota);
+            rota.setPessoaId(objRotas.getInt("PessoaId"));
+            rota.setStatus(objRotas.getBoolean("Status"));
+
+            //pega os pontos turisticos
+            List<PontoTuristico> lPontoTuristicos = new ArrayList<PontoTuristico>();
+            PontoTuristico pontoTuristico = new PontoTuristico();
+
+            JSONArray jArrPonto = objRotas.getJSONArray("PontoTuristicos");
+            for(int x = 0; x <jArrPonto.length (); x ++){
+                pontoTuristico = new PontoTuristico();
+                JSONObject objPonto = jArrPonto.getJSONObject (x);
+                pontoTuristico.setId(objPonto.getInt("Id"));
+                pontoTuristico.setNome_ponto(objPonto.getString("Nome_ponto"));
+                lPontoTuristicos.add(pontoTuristico);
+            }
+
+            rota.setlPontoTuristicos(lPontoTuristicos);
+            lRotas.add(rota);
+
+        }
+        pessoa.setRotas(lRotas);
+        return pessoa;
+    }
+
 
 }

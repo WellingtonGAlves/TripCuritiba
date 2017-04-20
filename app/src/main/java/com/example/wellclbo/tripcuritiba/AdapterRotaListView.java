@@ -1,0 +1,74 @@
+package com.example.wellclbo.tripcuritiba;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+
+import java.util.ArrayList;
+
+/**
+ * Created by wellclbo on 16/04/2017.
+ */
+
+public class AdapterRotaListView extends BaseAdapter
+{
+    private LayoutInflater mInflater;
+    private ArrayList<Rota> itens;
+
+    public AdapterRotaListView(Context context, ArrayList<Rota> itens)
+    {
+        //Itens que preencheram o listview
+        this.itens = itens;
+        //responsavel por pegar o Layout do item.
+        mInflater = LayoutInflater.from(context);
+    }
+
+    /**
+     * Retorna a quantidade de itens
+     *
+     * @return
+     */
+    public int getCount()
+    {
+        return itens.size();
+    }
+
+    /**
+     * Retorna o item de acordo com a posicao dele na tela.
+     *
+     * @param position
+     * @return
+     */
+    public Rota getItem(int position)
+    {
+        return itens.get(position);
+    }
+
+    /**
+     * Sem implementação
+     *
+     * @param position
+     * @return
+     */
+    public long getItemId(int position)
+    {
+        return position;
+    }
+
+    public View getView(int position, View view, ViewGroup parent)
+    {
+        //Pega o item de acordo com a posção.
+        Rota item = itens.get(position);
+        //infla o layout para podermos preencher os dados
+        view = mInflater.inflate(R.layout.activity_logado, null);
+
+        //atravez do layout pego pelo LayoutInflater, pegamos cada id relacionado
+        //ao item e definimos as informações.
+//        ((TextView) view.findViewById(R.id.text)).setText(item.getTexto());
+//        ((ImageView) view.findViewById(R.id.imagemview)).setImageResource(item.getIconeRid());
+
+        return view;
+    }
+}

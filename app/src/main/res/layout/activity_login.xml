@@ -5,23 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context="com.example.wellclbo.tripcuritiba.LoginActivity">
+    tools:context="com.example.wellclbo.tripcuritiba.LoginActivity"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:visibility="visible">
+        android:layout_height="100dp"
+        android:orientation="horizontal"></LinearLayout>
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:visibility="visible"
-            app:srcCompat="@drawable/ticket" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/ticket">
+
+
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"></LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"

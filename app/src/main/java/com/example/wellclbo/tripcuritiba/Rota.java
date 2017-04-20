@@ -1,18 +1,28 @@
 package com.example.wellclbo.tripcuritiba;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by wellclbo on 15/04/2017.
  */
 
-public class Rota {
-    public int Id ;
-    public int PessoaId ;
-    public String Nome ;
-    public Boolean Status ;
-    public Date Data ;
+public class Rota implements Serializable {
+    private int Id ;
+    private int PessoaId ;
+    private String Nome ;
+    private Boolean Status ;
+    private Date Data ;
+    private List<PontoTuristico> lPontoTuristicos;
 
+    public List<PontoTuristico> getlPontoTuristicos() {
+        return lPontoTuristicos;
+    }
+
+    public void setlPontoTuristicos(List<PontoTuristico> lPontoTuristicos) {
+        this.lPontoTuristicos = lPontoTuristicos;
+    }
 
     public int getId() {
         return Id;

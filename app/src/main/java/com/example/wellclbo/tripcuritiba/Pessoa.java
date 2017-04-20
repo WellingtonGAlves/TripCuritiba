@@ -1,18 +1,30 @@
 package com.example.wellclbo.tripcuritiba;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by wellclbo on 09/04/2017.
  */
 
-public class Pessoa
+public class Pessoa implements Serializable
 {
     private int id;
     private String nome;
     private String email;
     private boolean aceito;
     private Date dataCadastro;
+    private List<Rota> Rotas;
+
+    public List<Rota> getRotas() {
+        return Rotas;
+    }
+
+    public void setRotas(List<Rota> rotas) {
+        Rotas = rotas;
+    }
+
     public Pessoa(){}
 
     public int getId() {
