@@ -14,14 +14,14 @@ public class Rota implements Serializable {
     private String Nome ;
     private Boolean Status ;
     private Date Data ;
-    private List<PontoTuristico> lPontoTuristicos;
+    private List<RotaComPonto> lRotaComPontos;
 
-    public List<PontoTuristico> getlPontoTuristicos() {
-        return lPontoTuristicos;
+    public List<RotaComPonto> getlRotaComPontos() {
+        return lRotaComPontos;
     }
 
-    public void setlPontoTuristicos(List<PontoTuristico> lPontoTuristicos) {
-        this.lPontoTuristicos = lPontoTuristicos;
+    public void setlRotaComPontos(List<RotaComPonto> lRotaComPontos) {
+        this.lRotaComPontos = lRotaComPontos;
     }
 
     public int getId() {

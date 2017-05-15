@@ -29,10 +29,10 @@ import java.util.List;
 
 public class LogadoActivity extends Activity implements AdapterView.OnItemClickListener {
 
-    private Pessoa pessoa;
+
     private ListView listRotas;
     private String json;
-
+    private Pessoa pessoa;
     private ArrayList<Rota> itens;
 
     @Override
@@ -49,24 +49,20 @@ public class LogadoActivity extends Activity implements AdapterView.OnItemClickL
         Intent intent = getIntent();
 
         Bundle params = intent.getExtras();
-
+        Pessoa paramsPessoa = new Pessoa();
         if (params != null) {
-            String paramsString = params.getString("json");
-            json = paramsString;
+            paramsPessoa = (Pessoa) params.getSerializable("pessoa");
+            pessoa = paramsPessoa;
         }
-        carregaPessoa(json);
+        carregaPessoa(paramsPessoa);
     }
 
-    private void carregaPessoa(String json) {
-        try {
-            pessoa = Util.JsonParaObjetoPessoa(json);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        if(pessoa==null){
+    private void carregaPessoa(Pessoa paramsPessoa) {
+
+        if(paramsPessoa==null){
             //nao carrega rotas
         }else{
-            ArrayList<Rota> rotaArrayList =(ArrayList<Rota>) pessoa.getRotas();
+            ArrayList<Rota> rotaArrayList =(ArrayList<Rota>) paramsPessoa.getRotas();
 
 
 
@@ -76,12 +72,12 @@ public class LogadoActivity extends Activity implements AdapterView.OnItemClickL
         }
     }
 
-    public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3)
+    public void onItemClick(AdapterView<?> a, View v, int position, long id)
     {
         //Pega o item que foi selecionado.
-        //Rota item = adapterListView.(arg2);
+        TextView tv = (TextView) v;
         //Demostração
-        //Toast.makeText(this, "Você Clicou em: " + item.getNome(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Você Clicou em: " + tv.getText(), Toast.LENGTH_LONG).show();
     }
 
     public void mostrarRota(View v){
@@ -91,12 +87,7 @@ public class LogadoActivity extends Activity implements AdapterView.OnItemClickL
 
         TextView rotaSelecionada = (TextView)findViewById(R.id.textNome);
 
-        Pessoa pessoa = new Pessoa();
-        try {
-            pessoa = Util.JsonParaObjetoPessoa(json);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
         params.putString("rotaSelecionada", rotaSelecionada.getText().toString());
         params.putSerializable("pessoa",pessoa);
         intent.putExtras(params);

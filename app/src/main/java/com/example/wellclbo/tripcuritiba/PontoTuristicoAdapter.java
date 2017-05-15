@@ -14,15 +14,16 @@ import java.util.List;
  * Created by wellclbo on 17/04/2017.
  */
 
-public class PontoAdapter extends ArrayAdapter<PontoTuristico> {
+public class PontoTuristicoAdapter extends ArrayAdapter<PontoTuristico> {
     private List<PontoTuristico> pontoTuristicos;
     private int layout;
 
-    public PontoAdapter(Context context, int resource, List<PontoTuristico> pontoTuristicos){
+    public PontoTuristicoAdapter(Context context, int resource, List<PontoTuristico> pontoTuristicos){
         super(context,resource,pontoTuristicos);
         this.pontoTuristicos = pontoTuristicos;
         layout = resource;
     }
+
 
     @Override
     public View getView(int position, View contentView, ViewGroup parent){
@@ -41,6 +42,7 @@ public class PontoAdapter extends ArrayAdapter<PontoTuristico> {
             ImageView imageView = (ImageView) localView.findViewById(R.id.imagenPonto);
 
             if(textNome != null){
+
                 textNome.setText(pontoTuristico.getNome_ponto());
             }
             imageView.setImageResource(R.drawable.ponto1);

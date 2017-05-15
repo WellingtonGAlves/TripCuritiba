@@ -6,6 +6,7 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONStringer;
 import org.xml.sax.Parser;
 
 import java.io.BufferedReader;
@@ -136,25 +137,122 @@ public class Util {
             rota.setPessoaId(objRotas.getInt("PessoaId"));
             rota.setStatus(objRotas.getBoolean("Status"));
 
-            //pega os pontos turisticos
-            List<PontoTuristico> lPontoTuristicos = new ArrayList<PontoTuristico>();
-            PontoTuristico pontoTuristico = new PontoTuristico();
+            //pega as Rotas Com Pontos
+            List<RotaComPonto> lRotaComPontos = new ArrayList<RotaComPonto>();
+            RotaComPonto rotaComPonto = new RotaComPonto();
 
-            JSONArray jArrPonto = objRotas.getJSONArray("PontoTuristicos");
-            for(int x = 0; x <jArrPonto.length (); x ++){
-                pontoTuristico = new PontoTuristico();
-                JSONObject objPonto = jArrPonto.getJSONObject (x);
-                pontoTuristico.setId(objPonto.getInt("Id"));
-                pontoTuristico.setNome_ponto(objPonto.getString("Nome_ponto"));
-                lPontoTuristicos.add(pontoTuristico);
+            JSONArray jArrRotaComPonto = objRotas.getJSONArray("RotaComPontos");
+            for(int x = 0; x <jArrRotaComPonto.length (); x ++){
+                rotaComPonto = new RotaComPonto();
+                JSONObject objRotaComPonto = jArrRotaComPonto.getJSONObject (x);
+                rotaComPonto.setId(objRotaComPonto.getInt("Id"));
+                rotaComPonto.setPontoTuristicoId(objRotaComPonto.getInt("PontoTuristicoId"));
+                rotaComPonto.setRotaId(objRotaComPonto.getInt("RotaId"));
+int a = objRotaComPonto.getString("PontoTuristico").length();
+                JSONObject pontoObjeto = new JSONObject(objRotaComPonto.getString("PontoTuristico"));
+
+                JSONObject pontoJson = new JSONObject();
+//                for(int y = 0; y <jArrPontoTuristico.length (); y ++) {
+//
+//                    pontoJson = jArrPontoTuristico.getJSONObject(y);
+//                }
+                PontoTuristico pontoTuristico = new PontoTuristico();
+                pontoTuristico = Util.jsonTOPontoTuristico(pontoObjeto);
+                rotaComPonto.setPontoTuristico(pontoTuristico);
+                lRotaComPontos.add(rotaComPonto);
             }
-
-            rota.setlPontoTuristicos(lPontoTuristicos);
+            rota.setlRotaComPontos(lRotaComPontos);
             lRotas.add(rota);
 
         }
         pessoa.setRotas(lRotas);
         return pessoa;
+    }
+
+    private static PontoTuristico jsonTOPontoTuristico(JSONObject pontoObjeto) {
+        PontoTuristico pontoTuristico = new PontoTuristico();
+
+//        try {
+//            pontoObjeto = pontoObjeto.getJSONObject("PontoTuristico");
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+        try {
+            if(pontoObjeto.getString("Id")!=null){
+                pontoTuristico.setId(pontoObjeto.getInt("Id"));
+            }
+
+            if(pontoObjeto.getString("Imagem_ponto")!=null){
+                pontoTuristico.setImagem_ponto(pontoObjeto.getString("Imagem_ponto"));
+            }
+            if(pontoObjeto.getString("Nome_ponto")!=null){
+                pontoTuristico.setNome_ponto(pontoObjeto.getString("Nome_ponto"));
+            }
+            if(pontoObjeto.getString("Cont1")!=null){
+                pontoTuristico.setCont1(pontoObjeto.getString("Cont1"));
+            }
+            if(pontoObjeto.getString("Cont2")!=null){
+                pontoTuristico.setCont2(pontoObjeto.getString("Cont2"));
+            }
+            if(pontoObjeto.getString("Cont3")!=null){
+                pontoTuristico.setCont3(pontoObjeto.getString("Cont3"));
+            }
+            if(pontoObjeto.getString("Cont4")!=null){
+                pontoTuristico.setCont4(pontoObjeto.getString("Cont4"));
+            }
+            if(pontoObjeto.getString("Dica_ponto")!=null){
+                pontoTuristico.setDica_ponto(pontoObjeto.getString("Dica_ponto"));
+            }
+            if(pontoObjeto.getString("Horarios_ponto")!=null){
+                pontoTuristico.setHorarios_ponto(pontoObjeto.getString("Horarios_ponto"));
+            }
+            if(pontoObjeto.getString("Imagem_carrossel")!=null){
+                pontoTuristico.setImagem_carrossel(pontoObjeto.getString("Imagem_carrossel"));
+            }
+            if(pontoObjeto.getString("Imagem_historia")!=null){
+                pontoTuristico.setImagem_historia(pontoObjeto.getString("Imagem_historia"));
+            }
+            if(pontoObjeto.getString("Imagem_ponto")!=null){
+                pontoTuristico.setImagem_ponto(pontoObjeto.getString("Imagem_ponto"));
+            }
+            if(pontoObjeto.getString("Informacoes_ponto")!=null){
+                pontoTuristico.setInformacoes_ponto(pontoObjeto.getString("Informacoes_ponto"));
+            }
+            if(pontoObjeto.getString("Ordem")!=null){
+                pontoTuristico.setOrdem(pontoObjeto.getInt("Ordem"));
+            }
+            if(pontoObjeto.getString("Selecionado")!=null){
+                pontoTuristico.setSelecionado(pontoObjeto.getBoolean("Selecionado"));
+            }
+            if(pontoObjeto.getString("Sub1")!=null){
+                pontoTuristico.setSub1(pontoObjeto.getString("Sub1"));
+            }
+            if(pontoObjeto.getString("Sub2")!=null){
+                pontoTuristico.setSub2(pontoObjeto.getString("Sub2"));
+            }
+            if(pontoObjeto.getString("Sub3")!=null){
+                pontoTuristico.setSub3(pontoObjeto.getString("Sub3"));
+            }
+            if(pontoObjeto.getString("Sub4")!=null){
+                pontoTuristico.setSub4(pontoObjeto.getString("Sub4"));
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return  pontoTuristico;
+    }
+
+
+    public static String ConvertPessoaToJSON(Pessoa pessoa) {
+        JSONObject mainObject = new JSONObject();
+        try {
+            mainObject.put("email",pessoa.getEmail());
+            return mainObject.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 
