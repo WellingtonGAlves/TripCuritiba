@@ -8,13 +8,14 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.app.ProgressDialog;
 import android.widget.ImageView;
 import android.widget.Toast;
-
+import android.support.v7.widget.Toolbar;
 import org.json.JSONException;
 
 import java.io.DataOutputStream;
@@ -30,6 +31,7 @@ public class LoginActivity extends Activity {
     private Pessoa pessoa;
     private String json;
     private ImageView imageView;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +41,14 @@ public class LoginActivity extends Activity {
         btnLogin = (Button)findViewById(R.id.btnLogin);
         buscaEmail = editEmail.getText().toString();
 
-
-
+        toolbar = (Toolbar)findViewById(R.id.toobar);
+        setSupportActionBar(toolbar);
 
     }
+
+    private void setSupportActionBar(Toolbar toolbar) {
+    }
+
     public void onClick(View v)
     {
         pessoa = new Pessoa();
@@ -56,6 +62,8 @@ public class LoginActivity extends Activity {
         new LoginActivity.DownloadFromApiLogin().execute(pessoa);
 
     }
+
+
 
     private class DownloadFromApiLogin extends AsyncTask<Pessoa, Void, String> {
 
@@ -75,6 +83,8 @@ public class LoginActivity extends Activity {
                     activeNetwork.isConnectedOrConnecting();
 
             if(!isConnected) {
+                dialog.dismiss();
+
                 Toast.makeText(LoginActivity.this, "Verifique a conexão com a internet...", Toast.LENGTH_SHORT).show();
             }
         }
@@ -168,4 +178,5 @@ public class LoginActivity extends Activity {
 
         }
     }
+
 }

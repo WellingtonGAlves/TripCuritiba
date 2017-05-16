@@ -29,17 +29,17 @@ public class ApresentacaoDaRota extends Activity {
 
         Intent intent = getIntent();
         Bundle params = intent.getExtras();
-        ArrayList<RotaComPonto> rotaComPontoArrayList = new ArrayList<RotaComPonto>();
         if (params != null) {
-
-            String rotaSelecionada = params.getString("rotaSelecionada");
-            pessoa = (Pessoa) params.getSerializable("pessoa");
+            Rota rota = (Rota) params.getSerializable("rota");
+            ArrayList<Rota> rotaArrayList = new ArrayList<Rota>();
+            rotaArrayList.add(rota);
+            pessoa.setRotas(rotaArrayList);
+            ArrayList<RotaComPonto> rotaComPontoArrayList = new ArrayList<RotaComPonto>();
             for(Rota element : pessoa.getRotas()) {
-                if(element.getNome().equals(rotaSelecionada)){
 
                     rotaComPontoArrayList =(ArrayList<RotaComPonto>) element.getlRotaComPontos();
 
-                }
+
 
             }
             ArrayList<PontoTuristico> pontoTuristicoArrayList = new ArrayList<PontoTuristico>();
@@ -49,6 +49,7 @@ public class ApresentacaoDaRota extends Activity {
 
 
             ListView listaPonto = (ListView) findViewById(R.id.listPontos);
+
             ArrayAdapter<PontoTuristico> pontoTuristicoAdapter = new PontoTuristicoAdapter(ApresentacaoDaRota.this,R.layout.ponto_item,pontoTuristicoArrayList);
             listaPonto.setAdapter(pontoTuristicoAdapter);
         }

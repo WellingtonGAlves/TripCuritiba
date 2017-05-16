@@ -7,7 +7,15 @@
     android:orientation="vertical"
     tools:context="com.example.wellclbo.tripcuritiba.LoginActivity"
     >
-
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toobar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:popupTheme="@style/Theme.AppCompat.Light"
+        android:background="@color/colorPrimary"
+        android:elevation="3dp"
+        />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"

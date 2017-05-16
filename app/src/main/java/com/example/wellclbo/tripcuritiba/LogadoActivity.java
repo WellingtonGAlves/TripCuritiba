@@ -27,7 +27,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LogadoActivity extends Activity implements AdapterView.OnItemClickListener {
+public class LogadoActivity extends Activity {
 
 
     private ListView listRotas;
@@ -40,7 +40,7 @@ public class LogadoActivity extends Activity implements AdapterView.OnItemClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logado);
         //Pega a referencia do ListView
-        listRotas = (ListView) findViewById(R.id.listClubes);
+        listRotas = (ListView) findViewById(R.id.listRotas);
         //Define o Listener quando alguem clicar no item.
         //listRotas.setOnItemClickListener((AdapterView.OnItemClickListener) this);
 
@@ -62,36 +62,41 @@ public class LogadoActivity extends Activity implements AdapterView.OnItemClickL
         if(paramsPessoa==null){
             //nao carrega rotas
         }else{
-            ArrayList<Rota> rotaArrayList =(ArrayList<Rota>) paramsPessoa.getRotas();
+            final ArrayList<Rota> rotaArrayList =(ArrayList<Rota>) paramsPessoa.getRotas();
+            ArrayAdapter<Rota> rotaAdapter = new RotaAdapter(LogadoActivity.this,R.layout.rota_item,rotaArrayList);
+            ListView listaRota = (ListView) findViewById(R.id.listRotas);
+            listaRota.setAdapter(rotaAdapter);
+            listaRota.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-
-
-            ArrayAdapter<Rota> clubeAdapter = new RotaAdapter(LogadoActivity.this,R.layout.rota_item,rotaArrayList);
-            ListView listaClube = (ListView) findViewById(R.id.listClubes);
-            listaClube.setAdapter(clubeAdapter);
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(LogadoActivity.this, ApresentacaoDaRota.class);
+                    Bundle params = new Bundle();
+                    //Pega o item que foi selecionado.
+                    Rota rota = rotaArrayList.get(position);
+                    //Demostração
+                    //Toast.makeText(LogadoActivity.this, "Você Clicou em: " + rota.getNome(), Toast.LENGTH_LONG).show();
+                    params.putSerializable("rota",rota);
+                    intent.putExtras(params);
+                    startActivity(intent);
+                }
+            });
         }
     }
 
-    public void onItemClick(AdapterView<?> a, View v, int position, long id)
-    {
-        //Pega o item que foi selecionado.
-        TextView tv = (TextView) v;
-        //Demostração
-        Toast.makeText(this, "Você Clicou em: " + tv.getText(), Toast.LENGTH_LONG).show();
-    }
 
-    public void mostrarRota(View v){
-        Intent intent = new Intent(LogadoActivity.this, ApresentacaoDaRota.class);
-        Bundle params = new Bundle();
-
-
-        TextView rotaSelecionada = (TextView)findViewById(R.id.textNome);
-
-
-        params.putString("rotaSelecionada", rotaSelecionada.getText().toString());
-        params.putSerializable("pessoa",pessoa);
-        intent.putExtras(params);
-        startActivity(intent);
-    }
+//    public void mostrarRota(View v){
+//        Intent intent = new Intent(LogadoActivity.this, ApresentacaoDaRota.class);
+//        Bundle params = new Bundle();
+//
+//
+//        TextView rotaSelecionada = (TextView)findViewById(R.id.textNome);
+//
+//
+//        params.putString("rotaSelecionada", rotaSelecionada.getText().toString());
+//        params.putSerializable("pessoa",pessoa);
+//        intent.putExtras(params);
+//        startActivity(intent);
+//    }
 
 }
