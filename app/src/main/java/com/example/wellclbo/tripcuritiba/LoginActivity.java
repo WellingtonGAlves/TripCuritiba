@@ -1,6 +1,7 @@
 package com.example.wellclbo.tripcuritiba;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -10,25 +11,14 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.app.ProgressDialog;
 import android.widget.ImageView;
 import android.widget.Toast;
-import android.support.v7.widget.Toolbar;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.DataOutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -39,6 +29,16 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.DataOutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 
 
 public class LoginActivity extends Activity {
@@ -100,6 +100,12 @@ public class LoginActivity extends Activity {
                                 // Application code
                                 try {
                                     String email = object.getString("email");
+                                    if (email != null) {
+                                        Toast.makeText(LoginActivity.this, "Email não esta null..."+email.toString(), Toast.LENGTH_LONG).show();
+                                    }else{
+                                        Toast.makeText(LoginActivity.this, "Email esta nuloooo...", Toast.LENGTH_LONG).show();
+
+                                    }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -182,7 +188,7 @@ public class LoginActivity extends Activity {
             if(!isConnected) {
                 dialog.dismiss();
 
-                Toast.makeText(LoginActivity.this, "Verifique a conexão com a internet...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Verifique a conexão com a internet...", Toast.LENGTH_LONG).show();
             }
         }
 
