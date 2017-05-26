@@ -101,7 +101,10 @@ public class LoginActivity extends Activity {
                                 try {
                                     String email = object.getString("email");
                                     if (email != null) {
-                                        Toast.makeText(LoginActivity.this, "Email não esta null..."+email.toString(), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(LoginActivity.this, email.toString(), Toast.LENGTH_LONG).show();
+                                        Pessoa pessoa = new Pessoa();
+                                        pessoa.setEmail(email);
+                                        new LoginActivity.DownloadFromApiLogin().execute(pessoa);
                                     }else{
                                         Toast.makeText(LoginActivity.this, "Email esta nuloooo...", Toast.LENGTH_LONG).show();
 
@@ -259,24 +262,32 @@ public class LoginActivity extends Activity {
         protected void onPostExecute(String result) {
             dialog.dismiss();
             super.onPostExecute(result);
-            if(result!=null){
+
+            Pessoa paramsPessoa = new Pessoa();
+            json = result;
+            try {
+                paramsPessoa = Util.JsonParaObjetoPessoa(json);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            if(paramsPessoa!=null && paramsPessoa.getRotas().size()>0){
                 Intent intent = new Intent(LoginActivity.this, LogadoActivity.class);
                 Bundle params = new Bundle();
 
-                Pessoa paramsPessoa = new Pessoa();
-                json = result;
-                try {
-                 paramsPessoa = Util.JsonParaObjetoPessoa(json);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+
 
                 params.putSerializable("pessoa", paramsPessoa);
                 intent.putExtras(params);
                 startActivity(intent);
 
-            }else{
-                pgLogado = false;
+            }else if(paramsPessoa!=null && paramsPessoa.getRotas().size()==0){
+
+                Toast.makeText(LoginActivity.this,"Você não possue rotas salvas!" , Toast.LENGTH_LONG).show();
+
+            }else
+            {
+                Toast.makeText(LoginActivity.this,"Email não encontrado na base de dados!" , Toast.LENGTH_LONG).show();
             }
 
         }
