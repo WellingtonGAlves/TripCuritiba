@@ -19,7 +19,7 @@
                 android:id="@+id/imagenPonto"
                 android:layout_width="357dp"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ponto1" />
+                 />
         </LinearLayout>
     </LinearLayout>
 

@@ -1,5 +1,9 @@
 package com.example.wellclbo.tripcuritiba;
 
+import android.app.ProgressDialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -7,10 +11,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,6 +28,12 @@ import java.util.List;
 
 public class Util {
 
+
+    public   static List<Bitmap> listaBitmapImages = new ArrayList<Bitmap>();
+
+    public static void setListaBitmapImages() {
+
+    }
 
     /**
      *Lê um arquivo da pasta raw (Resources) e converte o mesmo em String.
@@ -258,5 +270,40 @@ public class Util {
         return null;
     }
 
+    public static Bitmap loadImage (URL url) throws IOException {
+
+
+        InputStream inputStream;
+        Bitmap myBitMap;
+
+        inputStream = url.openStream();
+        myBitMap = BitmapFactory.decodeStream(inputStream);
+        inputStream.close();
+        return myBitMap;
+
+    }
+    //Carrega imagens para o app
+    public static class DownloadImageAsync extends AsyncTask<URL,Integer,Bitmap> {
+        ProgressDialog progress;
+        @Override
+        protected Bitmap doInBackground(URL... params) {
+            Bitmap myBitmap = null;
+            try{
+                myBitmap = Util.loadImage(params[0]);
+            }catch(IOException e){
+
+            }
+            return myBitmap;
+        }
+        @Override
+        protected void onPreExecute(){
+        }
+        @Override
+        protected void onPostExecute(Bitmap bitmap){
+            if(bitmap != null){
+                listaBitmapImages.add(bitmap);
+            }
+        }
+    }
 
 }

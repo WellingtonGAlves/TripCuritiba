@@ -6,11 +6,7 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import org.json.JSONException;
-
 import java.util.ArrayList;
-
-import static java.lang.System.in;
 
 public class ApresentacaoDaRota extends Activity {
 
@@ -38,9 +34,6 @@ public class ApresentacaoDaRota extends Activity {
             for(Rota element : pessoa.getRotas()) {
 
                     rotaComPontoArrayList =(ArrayList<RotaComPonto>) element.getlRotaComPontos();
-
-
-
             }
             ArrayList<PontoTuristico> pontoTuristicoArrayList = new ArrayList<PontoTuristico>();
             for (RotaComPonto rotaComPonto: rotaComPontoArrayList) {

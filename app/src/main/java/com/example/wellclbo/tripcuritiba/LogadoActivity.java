@@ -1,31 +1,18 @@
 package com.example.wellclbo.tripcuritiba;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
+
+import static com.example.wellclbo.tripcuritiba.PontoTuristicoAdapter.arrayString;
 
 public class LogadoActivity extends Activity {
 
@@ -55,7 +42,26 @@ public class LogadoActivity extends Activity {
             pessoa = paramsPessoa;
         }
         carregaPessoa(paramsPessoa);
-    }
+        String caminhoImagem;
+        int i = -1;
+        int cont = -1;
+        for (Rota rota:pessoa.getRotas()) {
+            i= i+1;
+            cont = cont + 1;
+            caminhoImagem = rota.getlRotaComPontos().get(i).getPontoTuristico().getImagem_historia();
+            URL url = null;
+            try {
+                url = new URL("https://tripcuritiba.azurewebsites.net/Uploads/thumbgaleria/"+caminhoImagem.toString());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            arrayString.add(Integer.parseInt(String.valueOf(cont)),caminhoImagem);
+
+            new PontoTuristicoAdapter.DownloadImageAsync().execute(url);
+        }
+
+        }
+
 
     private void carregaPessoa(Pessoa paramsPessoa) {
 
