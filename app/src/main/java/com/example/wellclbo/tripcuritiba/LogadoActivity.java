@@ -46,18 +46,22 @@ public class LogadoActivity extends Activity {
         int i = -1;
         int cont = -1;
         for (Rota rota:pessoa.getRotas()) {
-            i= i+1;
-            cont = cont + 1;
-            caminhoImagem = rota.getlRotaComPontos().get(i).getPontoTuristico().getImagem_historia();
-            URL url = null;
-            try {
-                url = new URL("https://tripcuritiba.azurewebsites.net/Uploads/thumbgaleria/"+caminhoImagem.toString());
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-            arrayString.add(Integer.parseInt(String.valueOf(cont)),caminhoImagem);
+            //i= i+1;
 
-            new PontoTuristicoAdapter.DownloadImageAsync().execute(url);
+            for (RotaComPonto rotaComPonto:rota.getlRotaComPontos()) {
+                cont = cont + 1;
+                caminhoImagem = rotaComPonto.getPontoTuristico().getImagem_historia().toString();
+                URL url = null;
+                try {
+                    url = new URL("https://tripcuritiba.azurewebsites.net/Uploads/thumbgaleria/"+caminhoImagem.toString());
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                arrayString.add(Integer.parseInt(String.valueOf(cont)),caminhoImagem);
+
+                new PontoTuristicoAdapter.DownloadImageAsync().execute(url);
+            }
+
         }
 
         }

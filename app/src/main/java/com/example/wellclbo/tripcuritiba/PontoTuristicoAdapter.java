@@ -72,7 +72,7 @@ public class PontoTuristicoAdapter extends ArrayAdapter<PontoTuristico> {
             for (Bitmap bitmap:lista) {
                 i = i+1;
                 caminhoImagem = arrayString.get(i);
-                if( caminhoImagem == pontoTuristico.getImagem_historia().toString()) {
+                if( caminhoImagem.equals(pontoTuristico.getImagem_historia().toString())) {
                     imageView.setImageBitmap(bitmap);
                 }
             }
