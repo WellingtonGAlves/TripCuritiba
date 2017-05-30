@@ -10,7 +10,6 @@ import java.util.List;
 
 public class Pessoa implements Serializable
 {
-    private int id;
     private String nome;
     private String email;
     private boolean aceito;
@@ -27,13 +26,6 @@ public class Pessoa implements Serializable
 
     public Pessoa(){}
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getNome() {
         return nome;

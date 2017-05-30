@@ -94,7 +94,7 @@ public class Util {
             Pessoa pessoa = new Pessoa();
 
             JSONObject mainObj = new JSONObject((jsonString));
-            pessoa.setId(Integer.parseInt(mainObj.getString("Id")));
+//            pessoa.setId(Integer.parseInt(mainObj.getString("Id")));
             pessoa.setNome(mainObj.getString("Nome"));
             pessoa.setEmail(mainObj.getString("Email"));
             pessoa.setAceito(Boolean.parseBoolean(mainObj.getString("Aceito")));
@@ -125,7 +125,7 @@ public class Util {
             }
             pessoa.setDataCadastro(dataCadastro);
             pessoa.setEmail(jsonObjPessoa.getString("Email"));
-            pessoa.setId(jsonObjPessoa.getInt("Id"));
+            //pessoa.setId(jsonObjPessoa.getInt("Id"));
             pessoa.setNome(jsonObjPessoa.getString("Nome"));
             //pegar rotas
             List<Rota> lRotas = new ArrayList<Rota>();

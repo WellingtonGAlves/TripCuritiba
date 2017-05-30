@@ -29,6 +29,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,6 +40,8 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+
+
 
 
 public class LoginActivity extends Activity {
@@ -53,6 +56,7 @@ public class LoginActivity extends Activity {
     private Toolbar toolbar;
     private CallbackManager callbackManager;
     private LoginButton loginButton;
+    public static Boolean existeNaBasedeDados = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,6 +181,8 @@ public class LoginActivity extends Activity {
     private void validaAcesso(View v) {
         new LoginActivity.DownloadFromApiLogin().execute(pessoa);
 
+
+
     }
 
 
@@ -221,6 +227,11 @@ public class LoginActivity extends Activity {
                 outputStream.writeBytes(result);
 
                 serverResponseCode = urlConnection.getResponseCode();
+                if(serverResponseCode==200){
+                    existeNaBasedeDados = true;
+                }else{
+                    existeNaBasedeDados = false;
+                }
                 serverResponseMessage = Util.webToString(urlConnection.getInputStream());
 
                 outputStream.flush();
@@ -265,14 +276,100 @@ public class LoginActivity extends Activity {
             }else if(paramsPessoa!=null && paramsPessoa.getRotas().size()==0){
 
                 Toast.makeText(LoginActivity.this,"Você não possue rotas salvas!" , Toast.LENGTH_LONG).show();
-
+                //existeNaBasedeDados = true;
             }else
             {
                 Toast.makeText(LoginActivity.this,"Email não encontrado na base de dados!" , Toast.LENGTH_LONG).show();
+                //existeNaBasedeDados = false;
+                Intent intent = new Intent(LoginActivity.this, CadastrarActivity.class);
+                Bundle params = new Bundle();
+
+
+
+                params.putSerializable("pessoa", pessoa);
+                intent.putExtras(params);
+                startActivity(intent);
             }
+
 
         }
     }
 
+//    private class CreateuserFromApiLogin extends AsyncTask<Pessoa, Void, String> {
+//
+//        private ProgressDialog dialog;
+//        boolean isConnected = false;
+//        int serverResponseCode;
+//        String serverResponseMessage;
+//
+//        @Override
+//        protected void onPreExecute() {
+//
+//            //dialog = ProgressDialog.show(LoginActivity.this, "Aviso", "Aguarde, estamos cadastrando");
+//            ConnectivityManager cm =
+//                    (ConnectivityManager)LoginActivity.this.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+//
+//            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+//            isConnected = activeNetwork != null &&
+//                    activeNetwork.isConnectedOrConnecting();
+//
+//            if(!isConnected) {
+//                dialog.dismiss();
+//
+//                Toast.makeText(LoginActivity.this, "Verifique a conexão com a internet...", Toast.LENGTH_LONG).show();
+//            }
+//        }
+//
+//        protected String doInBackground(Pessoa... params) {
+//            if (existeNaBasedeDados == false) {
+//                HttpURLConnection urlConnection = null;
+//
+//                Gson gson = new Gson();
+//                String json = gson.toJson(params[0]);
+//
+//
+//                try {
+//                    URL url = new URL("http://tripcuritiba.azurewebsites.net/api/login" + json);
+//                    urlConnection = (HttpURLConnection) url.openConnection();
+//                    urlConnection.setRequestMethod("POST");
+//                    urlConnection.setRequestProperty("Content-type", "application/json");
+//                    urlConnection.setDoInput(true);
+//                    urlConnection.setDoOutput(true);
+//
+//                    DataOutputStream outputStream = new DataOutputStream(urlConnection.getOutputStream());
+//
+//                    String result = Util.ConvertPessoaToJSON(params[0]);
+//                    outputStream.writeBytes(result);
+//
+//                    serverResponseCode = urlConnection.getResponseCode();
+//                    serverResponseMessage = Util.webToString(urlConnection.getInputStream());
+//
+//                    outputStream.flush();
+//                    outputStream.close();
+//
+//                    result = serverResponseMessage;
+//
+//                    return result;
+//
+//                } catch (Exception e) {
+//                    Log.e("Error", "Error ", e);
+//                    return null;
+//                } finally {
+//                    if (urlConnection != null) {
+//                        urlConnection.disconnect();
+//                    }
+//                }
+//            }
+//            return null;
+//        }
+//        @Override
+//        protected void onPostExecute(String result) {
+//            //dialog.dismiss();
+//            super.onPostExecute(result);
+//            if(result!=null) {
+//                Toast.makeText(LoginActivity.this, "Cadastrado realizado com Sucesso", Toast.LENGTH_LONG).show();
+//            }
+//        }
+//    }
 
 }
