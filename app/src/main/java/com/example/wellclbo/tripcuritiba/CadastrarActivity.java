@@ -1,6 +1,5 @@
 package com.example.wellclbo.tripcuritiba;
 
-import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -19,14 +18,11 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 
 import java.io.DataOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
-import java.util.Scanner;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class CadastrarActivity extends AppCompatActivity {
 
@@ -81,79 +77,42 @@ public class CadastrarActivity extends AppCompatActivity {
         protected String doInBackground(Pessoa... params) {
             if (LoginActivity.existeNaBasedeDados == false) {
                 HttpURLConnection urlConnection = null;
-                try{
+//                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+//                Date dataCadastro = new Date();
+//                String dataStr = "01-01-2017";
+//                try {
+//                    dataCadastro = sdf.parse(dataStr);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+                //params[0].setDataCadastro(dataCadastro);
                 Gson gson = new Gson();
                 String json = gson.toJson(params[0]);
 
-                URL url = null;
-                try {
-                    url = new URL("http://tripcuritiba.azurewebsites.net/api/login");
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
-
-                HttpURLConnection connection = null;
-                try {
-                    connection = (HttpURLConnection) url.openConnection();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
 
                 try {
-                    connection.setRequestMethod("POST");
-                } catch (ProtocolException e) {
-                    e.printStackTrace();
-                }
-
-                connection.setRequestProperty("Content-type", "application/json");
-                connection.setRequestProperty("Accept", "application/json");
-
-                connection.setDoOutput(true);
+                    URL url = new URL("http://tripcuritiba.azurewebsites.net/api/login");
+                    urlConnection = (HttpURLConnection) url.openConnection();
+                    urlConnection.setRequestMethod("POST");
+                    urlConnection.setRequestProperty("Content-type", "application/json; charset=UTF-8");
+                    urlConnection.setDoInput(true);
+                    urlConnection.setDoOutput(true);
 
 
-                PrintStream printStream = null;
-                try {
-                    printStream = new PrintStream(connection.getOutputStream());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                printStream.println(json);
+                    DataOutputStream outputStream = new DataOutputStream(urlConnection.getOutputStream());
+                    outputStream.writeBytes(String.valueOf(json.toString().getBytes("UTF-8")));
+                    //outputStream.close();
+                    String result = Util.ConvertPessoaToJSON(params[0]);
 
-                try {
-                    connection.connect();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                String jsonDeResposta = "";
-                try {
-                    jsonDeResposta = new Scanner(connection.getInputStream()).next();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                    serverResponseCode = urlConnection.getResponseCode();
+                    serverResponseMessage = Util.webToString(urlConnection.getInputStream());
 
+                    outputStream.flush();
+                    outputStream.close();
 
-//                    URL url = new URL("http://tripcuritiba.azurewebsites.net/api/login" + json);
-//                    urlConnection = (HttpURLConnection) url.openConnection();
-//                    urlConnection.setRequestMethod("POST");
-//                    urlConnection.setRequestProperty("Content-type", "application/json; charset=UTF-8");
-//                    urlConnection.setDoInput(true);
-//                    urlConnection.setDoOutput(true);
-//
-//
-//                    DataOutputStream outputStream = new DataOutputStream(urlConnection.getOutputStream());
-//                    outputStream.writeBytes(String.valueOf(json.toString().getBytes("UTF-8")));
-//                    //outputStream.close();
-//                    String result = Util.ConvertPessoaToJSON(params[0]);
-//
-//                    serverResponseCode = urlConnection.getResponseCode();
-//                    serverResponseMessage = Util.webToString(urlConnection.getInputStream());
-//
-//                    outputStream.flush();
-//                    outputStream.close();
-//
-//                    result = serverResponseMessage;
+                    result = serverResponseMessage;
 
-                    return jsonDeResposta;
+                    return result;
 
                 } catch (Exception e) {
                     Log.e("Error", "Error ", e);
