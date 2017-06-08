@@ -76,16 +76,19 @@ public class CadastrarActivity extends AppCompatActivity {
 
         protected String doInBackground(Pessoa... params) {
             if (LoginActivity.existeNaBasedeDados == false) {
+
+                params[0].setNome("Me deixa");
+
                 HttpURLConnection urlConnection = null;
-//                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-//                Date dataCadastro = new Date();
-//                String dataStr = "01-01-2017";
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                Date dataCadastro = new Date();
+//                String dataStr = "";
 //                try {
 //                    dataCadastro = sdf.parse(dataStr);
 //                } catch (Exception e) {
 //                    e.printStackTrace();
 //                }
-                //params[0].setDataCadastro(dataCadastro);
+                params[0].setDataCadastro(dataCadastro);
                 Gson gson = new Gson();
                 String json = gson.toJson(params[0]);
 
