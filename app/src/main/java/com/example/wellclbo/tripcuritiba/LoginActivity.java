@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -48,6 +49,7 @@ public class LoginActivity extends Activity {
 
     private EditText editEmail;
     private Button btnLogin;
+    private Button btnAcessarSite;
     private String buscaEmail;
     private Boolean pgLogado = false;
     private Pessoa pessoa;
@@ -57,6 +59,7 @@ public class LoginActivity extends Activity {
     private CallbackManager callbackManager;
     private LoginButton loginButton;
     public static Boolean existeNaBasedeDados = false;
+    public static Boolean bool = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,12 +69,23 @@ public class LoginActivity extends Activity {
         editEmail = (EditText)findViewById(R.id.email);
         btnLogin = (Button)findViewById(R.id.email_sign_in_button);
         buscaEmail = editEmail.getText().toString();
+        btnAcessarSite = (Button) findViewById(R.id.btnAcessarSite);
+
 
         loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.setReadPermissions(Arrays.asList(
                 "public_profile", "email", "user_birthday", "user_friends"));
 
         callbackManager = CallbackManager.Factory.create();
+
+        if(bool == true){
+            Toast.makeText(LoginActivity.this,"Crie Rotas atravez do site para visualizalas neste App !" , Toast.LENGTH_LONG).show();
+            btnAcessarSite.setVisibility(View.VISIBLE);
+            btnAcessarSite.findFocus();
+        }else{
+            btnAcessarSite.setVisibility(View.INVISIBLE);
+
+        }
 
         try {
             PackageInfo info = getPackageManager().getPackageInfo(
@@ -180,10 +194,14 @@ public class LoginActivity extends Activity {
 
     private void validaAcesso(View v) {
         new LoginActivity.DownloadFromApiLogin().execute(pessoa);
-
-
-
     }
+    public void acessarSite(View view) {
+        String url = "http://tripcuritiba.azurewebsites.net/";
+        Uri uri = Uri.parse(url);
+        Intent abrirBrowser = new Intent(Intent.ACTION_VIEW,uri);
+        startActivity(abrirBrowser);
+    }
+
 
 
 
@@ -214,7 +232,7 @@ public class LoginActivity extends Activity {
         protected String doInBackground(Pessoa... params) {
             HttpURLConnection urlConnection = null;
             try {
-                URL url = new URL("http://tripcuritiba.azurewebsites.net/api/login?email="+params[0].getEmail().toString());
+                URL url = new URL("http://tripcuritiba.azurewebsites.net/api/login?email="+params[0].getEmail().toString()+"&nome=null");
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("POST");
                 urlConnection.setRequestProperty("Content-type", "application/json");
@@ -371,5 +389,6 @@ public class LoginActivity extends Activity {
 //            }
 //        }
 //    }
+
 
 }

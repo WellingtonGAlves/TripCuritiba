@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.wellclbo.tripcuritiba.Login">
+    tools:context="com.example.wellclbo.tripcuritiba.LoginActivity">
 
     <!-- Login progress -->
     <ProgressBar
@@ -22,7 +22,7 @@
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/email_login_form"
@@ -50,32 +50,45 @@
                 android:layout_height="wrap_content">
 
 
-
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:onClick="onClick"
                 android:id="@+id/email_sign_in_button"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:onClick="onClick"
                 android:text="@string/action_sign_in"
                 android:textStyle="bold" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <com.facebook.login.widget.LoginButton
                     android:id="@+id/login_button"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginTop="30dp" />
+                    android:layout_marginTop="30dp"
+                    android:onClick="salvarUsuario" />
+
+
+
             </LinearLayout>
 
         </LinearLayout>
 
     </ScrollView>
+    <Button
+        android:id="@+id/btnAcessarSite"
+        style="?android:textAppearanceSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:onClick="acessarSite"
+        android:text="Acessar Site TripCuritiba"
+        android:textStyle="bold" />
 </LinearLayout>
